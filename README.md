@@ -1,1 +1,1 @@
-# Vue 3 + Typescript + Vite + Router + Pinia + axios + Naive Ui
+# Vue 3 + Typescript + Vite + Router + Pinia + axios + Element-Plus
