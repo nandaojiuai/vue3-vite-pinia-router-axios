@@ -3,7 +3,8 @@ import axios, { AxiosRequestConfig } from 'axios'
 import NProgress from 'nprogress'
 
 // 设置请求头和请求路径
-axios.defaults.baseURL = '/api'
+// @ts-ignore
+axios.defaults.baseURL = import.meta.env.VITE_APP_WEB_URL
 axios.defaults.timeout = 10000
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
 axios.interceptors.request.use(
@@ -13,20 +14,35 @@ axios.interceptors.request.use(
             //@ts-ignore
             config.headers.token = token
         }
+        // 打印请求信息
+        console.log('请求地址:', config.url)
+        console.log('请求方法:', config.method)
+        console.log('请求数据:', config.data)
         return config
     },
     (error) => {
         return error
     }
 )
-// 响应拦截
-axios.interceptors.response.use((res) => {
-    if (res.data.code === 111) {
-        sessionStorage.setItem('token', '')
-        // token过期操作
+// 响应拦截器
+axios.interceptors.response.use(
+    (response) => {
+        // 打印响应信息
+        console.log('响应数据:', response.data)
+        console.log('响应状态码:', response.status)
+        console.log('响应头:', response.headers)
+
+        if (response.data.code === 111) {
+            sessionStorage.setItem('token', '')
+            // token过期操作
+        }
+        return response
+    },
+    (error) => {
+        console.error('响应出错:', error)
+        return Promise.reject(error)
     }
-    return res
-})
+)
 
 interface ResType<T> {
     code: number

@@ -7,16 +7,30 @@ import path from 'path'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+
 export default defineConfig({
     plugins: [
         vue(),
         AutoImport({
-            resolvers:[ElementPlusResolver()],
+            resolvers: [ElementPlusResolver()],
         }),
         Components({
-            resolvers:[ElementPlusResolver()],
+            resolvers: [ElementPlusResolver()],
         }),
     ],
+    server: {
+        hmr: true, //vue3 vite配置热更新不用手动刷新
+        port: 8080,
+        proxy: {
+            '/apis': {
+                // target: 'https://hyerpsassfoursg.huayiyunxinxi.com',
+                target: 'https://visual.huayiyunxinxi.com',
+                changeOrigin: true,
+                secure: false,
+                rewrite: (path) => path.replace(/^\/apis/, ''),
+            },
+        },
+    },
     resolve: {
         //可以使用@来代表src目录
         alias: {
@@ -26,8 +40,8 @@ export default defineConfig({
     css: {
         preprocessorOptions: {
             scss: {
-                additionalData: '@import "@/assets/style/main.scss";'
-            }
-        }
+                additionalData: '@import "@/assets/style/main.scss";',
+            },
+        },
     },
 })
