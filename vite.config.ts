@@ -23,8 +23,7 @@ export default defineConfig({
         port: 8080,
         proxy: {
             '/apis': {
-                // target: 'https://hyerpsassfoursg.huayiyunxinxi.com',
-                target: 'https://visual.huayiyunxinxi.com',
+                target: 'https://xxxxx',
                 changeOrigin: true,
                 secure: false,
                 rewrite: (path) => path.replace(/^\/apis/, ''),
